@@ -4,8 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordle Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <h1>Wordle Game</h1>
+    <div id="game-board"></div>
+    <div id="keyboard-container"></div>
+
+    <!-- Restart Modal -->
+     <div id="restart-modal" class="modal hidden">
+        <div class="modal-content">
+            <div id="modal-message"></div>
+            <button id="restart-button">Restart Game</button>
+        </div>
+     </div>
+
+     <div id="toast" class="toast"></div>
 </body>
-</html>
+<script src="main.js"></script>
+</html> 
