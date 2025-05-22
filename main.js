@@ -269,24 +269,30 @@ function checkGuess(guess) {
   const wordArray = WORD.split("");
   const guessArray = guess.split("");
   const colors = Array(5).fill("absent");
+  const letterCount = {};
 
-  // Step 1: correct positions
-  guessArray.forEach((char, i) => {
-    if (char === wordArray[i]) {
+  // Step 1: Count occurrences of each letter in the target word
+  for (const letter of wordArray) {
+    letterCount[letter] = (letterCount[letter] || 0) + 1;
+  }
+
+  // Step 2: Mark correct letters first
+  for (let i = 0; i < 5; i++) {
+    if (guessArray[i] === wordArray[i]) {
       colors[i] = "correct";
-      wordArray[i] = null;
+      letterCount[guessArray[i]]--;
     }
-  });
+  }
 
-  // Step 2: present but wrong position
-  guessArray.forEach((char, i) => {
-    if (colors[i] !== "correct" && wordArray.includes(char)) {
+  // Step 3: Mark present (wrong position) letters
+  for (let i = 0; i < 5; i++) {
+    if (colors[i] !== "correct" && letterCount[guessArray[i]] > 0) {
       colors[i] = "present";
-      wordArray[wordArray.indexOf(char)] = null;
+      letterCount[guessArray[i]]--;
     }
-  });
+  }
 
-  // Step 3: animate and apply classes
+  // Step 4: Animate and apply classes
   tiles.forEach((tile, i) => {
     setTimeout(() => {
       tile.style.animation = "flipIn 0.5s ease";
@@ -299,7 +305,7 @@ function checkGuess(guess) {
     }, i * 300 + 500);
   });
 
-  // Check win or lose after animations complete
+  // Step 5: Check for win or game over
   setTimeout(() => {
     if (guess === WORD) {
       showToast("🎉 You Win!");
